@@ -18,7 +18,9 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { EmployeeGuard } from '../auth/employee.guard';
 import { AdminGuard } from '../auth/admin.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('books') // agrupa estas rutas en Swagger bajo "books"
 @Controller('books') // todas las rutas de esta clase: /api/books...
 export class BooksController {
   constructor(private readonly booksService: BooksService) {} // pide el servicio
@@ -43,6 +45,7 @@ export class BooksController {
 
   @Post() // POST /api/books → responde 201
   @UseGuards(AuthGuard, EmployeeGuard) // 1.º ¿quién eres?  2.º ¿eres empleado?
+  @ApiBearerAuth() // en Swagger: esta ruta necesita token (sale un candado)
   create(@Body() dto: CreateAndUpdateBookDto) {
     return this.booksService.create(dto);
   }

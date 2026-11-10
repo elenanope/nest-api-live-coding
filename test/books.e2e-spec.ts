@@ -45,4 +45,18 @@ describe('API de libros', () => {
 
     expect(response.status).toBe(401);
   });
+
+  it('GET /api/books/abc responde 400', async () => {
+    const response = await request(app.getHttpServer()).get('/api/books/abc');
+
+    expect(response.status).toBe(400);
+  });
+
+  it('POST /api/auth/login con una contraseña mal responde 401', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/api/auth/login')
+      .send({ email: 'ana@mail.com', password: 'wrongpassword' });
+
+    expect(response.status).toBe(401);
+  });
 });
